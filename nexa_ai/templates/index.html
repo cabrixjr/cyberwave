@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexa AI</title>
+    <link rel="icon" type="image/png" href="/static/nexa.png">
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+</head>
+<body>
+    <div class="app-shell" id="appShell">
+        <aside class="sidebar">
+            <div class="sidebar-top">
+                <div class="sidebar-header">
+                    <div class="logo-container">
+                        <img src="/static/nexa.jpg" class="logo-img" alt="Nexa Logo">
+                        <span class="logo-text">Nexa</span>
+                    </div>
+                    <button id="sidebarToggle" class="icon-btn-plain">
+                        <span class="material-symbols-rounded">side_navigation</span>
+                    </button>
+                </div>
+
+                <button class="btn-new-chat" onclick="window.location.href='/new-chat'">
+                    <span class="material-symbols-rounded">add_circle</span>
+                    <span>New Project</span>
+                </button>
+
+                <div class="search-box">
+                    <span class="material-symbols-rounded">search</span>
+                    <input type="text" id="chatSearch" placeholder="Search history...">
+                </div>
+
+                <div class="history-list" id="historyList">
+                    <p class="section-label">RECENT ACTIVITY</p>
+                    {% for chat in chats %}
+                    <div class="history-item" onclick="loadChat({{ chat.id }})">
+                        <span class="material-symbols-rounded">chat_bubble</span>
+                        <span>{{ chat.title }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="sidebar-bottom">
+                {% if user %}
+                <div class="settings-container">
+                    <button class="settings-trigger" id="settingsBtn">
+                        <div class="user-meta">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed={{ user.username }}" class="user-profile-img-small">
+                            <span class="user-name">{{ user.username }}</span>
+                        </div>
+                        <span class="material-symbols-rounded">expand_more</span>
+                    </button>
+                    <div class="settings-dropdown" id="settingsDropdown">
+                        <a href="/settings">
+                            <span class="material-symbols-rounded">account_circle</span> 
+                            Account Settings
+                        </a>
+                        <a href="/upgrade" class="premium-link">
+                            <span class="material-symbols-rounded">workspace_premium</span> 
+                            Upgrade to Pro
+                        </a>
+                        <hr class="dropdown-divider">
+                        <a href="/logout" class="logout-link">
+                            <span class="material-symbols-rounded">logout</span> 
+                            Log Out
+                        </a>
+                    </div>
+                </div>
+                {% else %}
+                <div class="sidebar-auth-prompt">
+                    <a href="/auth" class="auth-btn-sidebar">
+                        <span class="material-symbols-rounded">login</span>
+                        <span>Sign In</span>
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </aside>
+
+        <main class="main-view">
+            <header class="top-nav">
+                <div class="nav-left"></div>
+                <div class="auth-box">
+                    {% if user %}
+                    <div class="header-user">
+                        <span class="welcome-tag">{% if user.is_premium %}Premium Access{% else %}Free Plan{% endif %}</span>
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed={{ user.username }}" class="user-profile-img">
+                    </div>
+                    {% else %}
+                    <a href="/auth" class="nav-link">Login</a>
+                    <a href="/auth" class="social-btn">Sign Up</a>
+                    {% endif %}
+                </div>
+            </header>
+
+            <div class="chat-container" id="chatContainer">
+                <div id="welcomeScreen" class="welcome-msg">
+                    <h1 class="gradient-text" id="dynamicGreeting">Hi {% if user %}{{ user.username }}{% else %}Guest{% endif %}</h1>
+                    <p class="sub-text" id="dynamicTagline">How can Nexa assist your brilliance today?</p>
+                    
+                    <div class="suggestions-grid">
+                        <div class="sug-chip" onclick="setQuick('Design a 30-day fitness plan')">
+                            <span class="material-symbols-rounded">fitness_center</span>
+                            <span>Fitness Plan</span>
+                        </div>
+                        <div class="sug-chip" onclick="setQuick('Write a Python script for web scraping')">
+                            <span class="material-symbols-rounded">code</span>
+                            <span>Coding Help</span>
+                        </div>
+                        <div class="sug-chip" onclick="setQuick('Explain quantum physics simply')">
+                            <span class="material-symbols-rounded">science</span>
+                            <span>Science Explainer</span>
+                        </div>
+                        <div class="sug-chip" onclick="setQuick('Draft a professional email')">
+                            <span class="material-symbols-rounded">mail</span>
+                            <span>Email Draft</span>
+                        </div>
+                    </div>
+                </div>
+                <div id="chatFlow"></div>
+            </div>
+
+            <footer class="input-area">
+                <div id="imagePreview" class="image-preview-container"></div>
+                <div class="input-pill">
+                    <div class="attachment-menu-container">
+                        <button class="utility-btn" id="attachBtn">
+                            <span class="material-symbols-rounded">add</span>
+                        </button>
+                        <div class="attachment-menu" id="attachmentMenu">
+                            <div class="menu-item" onclick="document.getElementById('imageInput').click()">
+                                <span class="material-symbols-rounded">upload_file</span>
+                                <span>Upload from PC</span>
+                            </div>
+                            <div class="menu-item" onclick="openGoogleDrive()">
+                                <span class="material-symbols-rounded">cloud</span>
+                                <span>Google Drive</span>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="file" id="imageInput" hidden accept="image/*">
+                    
+                    <textarea id="userInput" placeholder="Message Nexa..." rows="1"></textarea>
+                    
+                    <button id="voiceBtn" class="voice-btn-dynamic" onclick="window.location.href='/voice'">
+                        <span class="material-symbols-rounded">mic</span>
+                    </button>
+                    
+                    <button id="sendBtn" class="send-btn-dynamic">
+                        <span class="material-symbols-rounded" id="sendIcon">arrow_upward</span>
+                    </button>
+                </div>
+                <p class="footer-disclaimer">Nexa can make mistakes. Check important info.</p>
+            </footer>
+        </main>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>

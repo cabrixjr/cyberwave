@@ -1,0 +1,32 @@
+.menu-toggle {
+  display: none;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    position: absolute;
+    top: 75px;
+    right: 0;
+    background: var(--bg);
+    width: 100%;
+    display: none;
+    flex-direction: column;
+    text-align: center;
+    padding: 25px 0;
+  }
+
+  .nav-links a {
+    margin: 14px 0;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .services-grid,
+  .portfolio-grid {
+    padding: 30px;
+  }
+}

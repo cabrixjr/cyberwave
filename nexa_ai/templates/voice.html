@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Chat - Nexa AI</title>
+    <link rel="icon" type="image/png" href="/static/nexa.png">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { 
+            background: radial-gradient(circle at center, #1e1b4b, #09090b); 
+            color: white; 
+            height: 100vh; 
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .voice-header {
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 10px 20px;
+            border-radius: 20px;
+            color: white;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+        
+        .back-btn:hover {
+            background: #3b82f6;
+            transform: translateX(-5px);
+        }
+        
+        .voice-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+        
+        .voice-visualizer {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(59,130,246,0.3), transparent 70%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 40px;
+            position: relative;
+            transition: 0.3s;
+        }
+        
+        .voice-visualizer.listening {
+            animation: pulse 2s infinite;
+            background: radial-gradient(circle, rgba(59,130,246,0.5), transparent 70%);
+        }
+        
+        .voice-btn {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            font-size: 72px;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 10px 40px rgba(59,130,246,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .voice-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 50px rgba(59,130,246,0.6);
+        }
+        
+        .voice-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .voice-btn.listening {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+        
+        .voice-status {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #a1a1aa;
+            text-align: center;
+        }
+        
+        .voice-status.active {
+            color: #3b82f6;
+            font-weight: 600;
+        }
+        
+        .transcript-box {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 40px;
+            min-height: 150px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .transcript-item {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 12px;
+            animation: fadeIn 0.4s ease;
+        }
+        
+        .transcript-item.user {
+            background: rgba(59,130,246,0.2);
+            text-align: right;
+        }
+        
+        .transcript-item.assistant {
+            background: rgba(255,255,255,0.05);
+        }
+        
+        .instructions {
+            text-align: center;
+            color: #71717a;
+            margin-top: 30px;
+            font-size: 14px;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="voice-header">
+        <a href="/" class="back-btn">
+            <span class="material-symbols-rounded">arrow_back</span>
+            <span>Back to Chat</span>
+        </a>
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <img src="/static/nexa.png" style="width: 36px;" alt="Nexa">
+            <span style="font-weight: 700; font-size: 1.2rem;">Voice Mode</span>
+        </div>
+    </div>
+    
+    <div class="voice-container">
+        <h2 class="voice-status" id="voiceStatus">Tap to speak</h2>
+        
+        <div class="voice-visualizer" id="visualizer">
+            <button class="voice-btn" id="voiceBtn">
+                <span class="material-symbols-rounded" id="voiceIcon">mic</span>
+            </button>
+        </div>
+        
+        <div class="instructions">
+            <p>Click the microphone to start speaking • Nexa will respond in voice</p>
+        </div>
+        
+        <div class="transcript-box" id="transcriptBox">
+            <p style="text-align: center; color: #71717a;">Your conversation will appear here...</p>
+        </div>
+    </div>
+    
+    <script>
+        const voiceBtn = document.getElementById('voiceBtn');
+        const voiceIcon = document.getElementById('voiceIcon');
+        const voiceStatus = document.getElementById('voiceStatus');
+        const visualizer = document.getElementById('visualizer');
+        const transcriptBox = document.getElementById('transcriptBox');
+        
+        let isListening = false;
+        let recognition = null;
+        let synthesis = window.speechSynthesis;
+        
+        // Check browser support
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRecognition();
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            recognition.lang = 'en-US';
+            
+            recognition.onstart = function() {
+                isListening = true;
+                voiceBtn.classList.add('listening');
+                visualizer.classList.add('listening');
+                voiceIcon.innerText = 'stop';
+                voiceStatus.innerText = 'Listening...';
+                voiceStatus.classList.add('active');
+            };
+            
+            recognition.onresult = async function(event) {
+                const transcript = event.results[0][0].transcript;
+                addTranscript('user', transcript);
+                
+                voiceStatus.innerText = 'Processing...';
+                
+                // Send to backend
+                try {
+                    const formData = new FormData();
+                    formData.append('text', transcript);
+                    const response = await fetch('/chat', { method: 'POST', body: formData });
+                    const data = await response.json();
+                    
+                    addTranscript('assistant', data.reply);
+                    speak(data.reply);
+                } catch (e) {
+                    addTranscript('assistant', 'Sorry, I encountered an error.');
+                    speak('Sorry, I encountered an error.');
+                }
+            };
+            
+            recognition.onend = function() {
+                isListening = false;
+                voiceBtn.classList.remove('listening');
+                visualizer.classList.remove('listening');
+                voiceIcon.innerText = 'mic';
+                voiceStatus.innerText = 'Tap to speak';
+                voiceStatus.classList.remove('active');
+            };
+            
+            recognition.onerror = function(event) {
+                console.error('Speech recognition error:', event.error);
+                voiceStatus.innerText = 'Error: ' + event.error;
+                setTimeout(() => {
+                    voiceStatus.innerText = 'Tap to speak';
+                }, 2000);
+            };
+        } else {
+            voiceStatus.innerText = 'Voice recognition not supported in this browser';
+            voiceBtn.disabled = true;
+        }
+        
+        voiceBtn.addEventListener('click', function() {
+            if (!recognition) return;
+            
+            if (isListening) {
+                recognition.stop();
+            } else {
+                recognition.start();
+            }
+        });
+        
+        function addTranscript(role, text) {
+            // Clear placeholder
+            if (transcriptBox.children.length === 1 && transcriptBox.children[0].tagName === 'P') {
+                transcriptBox.innerHTML = '';
+            }
+            
+            const div = document.createElement('div');
+            div.className = `transcript-item ${role}`;
+            div.innerHTML = `<strong>${role === 'user' ? 'You' : 'Nexa'}:</strong> ${text}`;
+            transcriptBox.appendChild(div);
+            transcriptBox.scrollTop = transcriptBox.scrollHeight;
+        }
+        
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = 1.0;
+                utterance.pitch = 1.0;
+                utterance.volume = 1.0;
+                
+                utterance.onstart = function() {
+                    voiceStatus.innerText = 'Nexa is speaking...';
+                    voiceStatus.classList.add('active');
+                };
+                
+                utterance.onend = function() {
+                    voiceStatus.innerText = 'Tap to speak';
+                    voiceStatus.classList.remove('active');
+                };
+                
+                synthesis.speak(utterance);
+            }
+        }
+    </script>
+</body>
+</html>

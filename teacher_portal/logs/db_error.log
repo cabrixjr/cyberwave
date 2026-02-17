@@ -1,0 +1,78 @@
+2025-11-15 19:30:25 - Database connection failed: SQLSTATE[HY000] [1045] Access denied for user ''@'localhost' (using password: NO)
+Auth init error: Database connection failed: SQLSTATE[HY000] [1045] Access denied for user ''@'localhost' (using password: NO)
+2025-11-15 19:30:27 - Database connection failed: SQLSTATE[HY000] [1045] Access denied for user ''@'localhost' (using password: NO)
+Auth init error: Database connection failed: SQLSTATE[HY000] [1045] Access denied for user ''@'localhost' (using password: NO)
+Register success: User 'mahende@gmail.com' created
+Login success: email=mahende@gmail.com
+Register error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'teacher_portal.users' doesn't exist
+Register success: User 'cabrixjr@gmail.com' created
+Login success: email=cabrixjr@gmail.com
+Login success: email=cabrixjr@gmail.com
+Login success: email=cabrixjr@gmail.com
+Login success: email=cabrixjr@gmail.com
+Login failed: invalid credentials for email=cabrixjr@gmail.com
+Login success: email=cabrixjr@gmail.com
+Register error: Email 'cabrixjr@gmail.com' already exists
+Login success: email=cabrixjr@gmail.com
+Register success: User 'cabrixjr1@gmail.com' created
+Login success: email=cabrixjr1@gmail.com
+Login failed: invalid credentials for email=baba@gmail.com
+Login success: email=baba@gmail.com
+Login failed: invalid credentials for email=ibrah@gmail.com
+Login failed: invalid credentials for email=baba@gmail.com
+Login failed: invalid credentials for email=ibrah@gmail.com
+Login success: email=ibrah@gmail.com
+Login success: email=ibrah@gmail.com role=employer
+Login success: email=ibrah@gmail.com role=employer
+Login success: email=ibrah@gmail.com role=employer
+Login success: email=ibrah@gmail.com role=employer
+Login success: email=ibrah@gmail.com role=employer
+Login success: email=ibrah@gmail.com role=employer
+Login success: email=ibrah@gmail.com role=employer
+Login success: email=ibrah@gmail.com role=employer
+Login success: email=baba@gmail.com role=worker
+Login success: email=baba@gmail.com role=worker
+Login failed: invalid credentials for email=ibrah@gmail.com
+Login success: email=ibrah@gmail.com role=employer
+Login success: email=ibrah@gmail.com role=employer
+Login success: email=ibrah@gmail.com role=employer
+Login success: email=ibrah@gmail.com role=employer
+Login success: email=ibrah@gmail.com role=employer
+Login success: email=ibrah@gmail.com role=employer
+Login success: email=ibrah@gmail.com role=employer
+Login success: email=ibrah@gmail.com role=employer
+Login success: email=ibrah@gmail.com role=employer
+Login success: email=baba@gmail.com role=worker
+Login success: email=baba@gmail.com role=worker
+Login success: email=baba@gmail.com role=worker
+Login success: email=baba@gmail.com role=worker
+Login success: email=baba@gmail.com role=worker
+Login success: email=ibrah@gmail.com role=employer
+Login success: email=baba@gmail.com role=worker
+Login success: email=baba@gmail.com role=worker
+Login success: email=baba@gmail.com role=worker
+Login success: email=ibrah@gmail.com role=employer
+Login success: email=ibrah@gmail.com role=employer
+Login success: email=baba@gmail.com role=worker
+Login success: email=baba@gmail.com role=worker
+Login success: email=baba@gmail.com role=worker
+Login success: email=ibrah@gmail.com role=employer
+Login success: email=baba@gmail.com role=worker
+Login success: email=ibrah@gmail.com role=employer
+Login success: email=mama@gmail.com role=worker
+Login success: email=ibrah@gmail.com role=employer
+Login success: email=mama@gmail.com role=worker
+Login success: email=mama@gmail.com role=worker
+Login success: email=ibrah@gmail.com role=employer
+Login success: email=baba@gmail.com role=worker
+Login success: email=ibrah@gmail.com role=employer
+Login success: email=baba@gmail.com role=worker
+Login success: email=ibrah@gmail.com role=employer
+Login success: email=baba@gmail.com role=worker
+Login success: email=dada@gmail.com role=worker
+Login success: email=fred@gmail.com role=employer
+Login success: email=ibrah@gmail.com role=employer
+Login success: email=ibrah@gmail.com role=employer
+Login success: email=fred@gmail.com role=employer
+Login success: email=baba@gmail.com role=worker
+Login success: email=ibrah@gmail.com role=employer

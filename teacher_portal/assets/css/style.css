@@ -1,0 +1,124 @@
+/* assets/css/style.css - Google-style Professional UI */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+    --electric-blue: #00d4ff;
+    --lightning-blue: #4b91f1;
+    --black-dune: #0a0e27;
+    --card-bg: #1a1f3a;
+    --border-color: #2d3548;
+    --text-light: #e5e7eb;
+    --text-gray: #9ca3af;
+    --google-blue: #1a73e8;
+}
+
+body {
+    font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+    background: var(--black-dune);
+    color: var(--text-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* The Centered Card */
+.auth-container {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    width: 100%;
+    max-width: 450px; /* Fixed width stops stretching */
+    padding: 48px 40px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+
+.logo-brand {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--electric-blue);
+    margin-bottom: 8px;
+}
+
+.auth-header {
+    font-size: 24px;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.auth-sub {
+    font-size: 16px;
+    color: var(--text-gray);
+    margin-bottom: 30px;
+}
+
+/* Vertical Form Stacking */
+.vertical-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    text-align: left;
+}
+
+.vertical-form input, .vertical-form select {
+    width: 100%;
+    padding: 13px 15px;
+    background: rgba(0,0,0,0.2);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: white;
+    font-size: 16px;
+}
+
+.vertical-form input:focus {
+    border-color: var(--google-blue);
+    outline: none;
+}
+
+/* Button & Action Logic */
+.action-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 35px;
+}
+
+.primary-btn {
+    background: var(--google-blue);
+    color: white;
+    padding: 10px 24px;
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.link-text {
+    color: var(--google-blue);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.divider {
+    margin: 25px 0;
+    border-bottom: 1px solid var(--border-color);
+    line-height: 0.1em;
+}
+.divider span { background: var(--card-bg); padding: 0 10px; color: var(--text-gray); font-size: 12px; }
+
+.social-btn {
+    width: 100%;
+    padding: 10px;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
